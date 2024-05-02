@@ -47,6 +47,10 @@ const Post = () => {
   
 
   const toggleLike =  (postId) => {
+    if (!loggedUser) {
+      alert('Please login first');
+      return;
+    }
     const updatedPosts = posts.map((post) => {
       if (post._id === postId) {
         if (!post.likes.includes(loggedUser._id)) {
@@ -70,9 +74,9 @@ const Post = () => {
   return (
     <div className="text-black dark:text-slate-100 bg-slate-900">
       <div className="wrapper pt-10 max-w-3xl ml-auto mr-auto mt-6">
-      <h1 className="text-4xl font-bold text-center mt-4 mb-10">
+      { loggedUser && <h1 className="text-4xl font-bold text-center mt-4 mb-10">
         Hi <span className="text-blue-500">{loggedUser.username}</span>, welcome back!
-      </h1>
+      </h1>}
         {/* Add the form for creating new posts */}
         <NewPostForm addPost={addPost}/>
 
@@ -89,7 +93,7 @@ const Post = () => {
               <PostContent content={post.content} />
               <PostImage imageUrl={post.imageUrl} />
               <PostLikes likes={post.likes.length} postId={post._id} toggleLike={toggleLike}/>
-              <AddComment postId={post._id} userId={loggedUser._id} addCommentToPost={addCommentToPost}/>
+              <AddComment postId={post._id} addCommentToPost={addCommentToPost}/>
               <Comment postId={post._id} userId={post.userId} />
             </article>
           ))}
